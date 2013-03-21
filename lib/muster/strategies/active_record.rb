@@ -39,14 +39,12 @@ module Muster
         parameters = Muster::Results.new(
           :select   => self.parse_select(query_string),
           :order    => self.parse_order(query_string),
-          :limit    => pagination[:limit],
-          :offset   => pagination[:offset],
           :where    => self.parse_where(query_string),
           :joins    => self.parse_joins(query_string),
-          :includes => self.parse_includes(query_string)
+          :includes => self.parse_includes(query_string),
+          :limit    => pagination[:limit] || 50,
+          :offset   => pagination[:offset],
         )
-
-        parameters.regular_writer('pagination', pagination[:pagination].symbolize_keys)
 
         return parameters
       end
@@ -95,7 +93,7 @@ module Muster
       #
       #   value = self.parse_pagination('page=2&page_size=10')  #=> { 'pagination' => {:page => 2, :per_page => 10}, 'limit' => 10, 'offset' => 10 }
       def parse_pagination( query_string )
-        strategy = Muster::Strategies::Pagination.new(:fields => [:pagination, :limit, :offset])
+        strategy = Muster::Strategies::Hash.new(:fields => [:limit, :offset])
         results  = strategy.parse(query_string)
         
         return results
