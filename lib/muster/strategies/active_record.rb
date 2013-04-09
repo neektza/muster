@@ -23,6 +23,7 @@ module Muster
           :includes => self.parse_includes(query_string),
           :limit    => pagination[:limit] || 50,
           :offset   => pagination[:offset],
+          :count    => self.parse_count(query_string)
         )
 
         return parameters
@@ -78,6 +79,13 @@ module Muster
         results  = strategy.parse(query_string)
         
         return results
+      end
+
+      def parse_count( query_string )
+        strategy = Muster::Strategies::Hash.new(:field => :count)
+        results  = strategy.parse(query_string)
+
+        return results[:count]
       end
 
     end
