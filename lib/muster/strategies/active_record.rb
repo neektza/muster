@@ -15,15 +15,16 @@ module Muster
         pagination = self.parse_pagination( query_string )
 
         parameters = Muster::Results.new(
+          :limit    => pagination[:limit] || 50,
+          :offset   => pagination[:offset],
           :select   => self.parse_select(query_string),
           :group    => self.parse_group(query_string),
           :order    => self.parse_order(query_string),
           :where    => self.parse_where(query_string),
           :joins    => self.parse_joins(query_string),
           :includes => self.parse_includes(query_string),
-          :limit    => pagination[:limit] || 50,
-          :offset   => pagination[:offset],
-          :count    => self.parse_count(query_string)
+          :count    => self.parse_count(query_string),
+          :sum      => self.parse_sum(query_string)
         )
 
         return parameters
@@ -86,6 +87,13 @@ module Muster
         results  = strategy.parse(query_string)
 
         return results[:count]
+      end
+      
+      def parse_sum( query_string )
+        strategy = Muster::Strategies::Hash.new(:field => :sum)
+        results  = strategy.parse(query_string)
+
+        return results[:sum]
       end
 
     end
