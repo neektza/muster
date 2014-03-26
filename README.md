@@ -1,4 +1,5 @@
 # Muster
+[![Code Climate](https://codeclimate.com/github/neektza/muster.png)](https://codeclimate.com/github/neektza/muster)
 
 Muster is a gem that turns query strings of varying formats into data structures suitable for
 easier consumption in things like AR/DataMapper scopes and queries, making API development just a little bit easier.
